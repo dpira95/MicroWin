@@ -1,0 +1,35 @@
+name: micro_win
+description: "A new Flutter project."
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.10.1
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  provider: ^6.1.2
+  file_picker: ^8.0.0
+  open_filex: ^4.6.0
+  url_launcher: ^6.3.0
+  pdfx: ^2.9.2
+  path_provider: ^2.1.2
+  shared_preferences: ^2.2.3
+  flutter_contacts: ^1.1.9+2
+  cupertino_icons: ^1.0.8
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/hero/body/
+    - assets/hero/head/
+    - assets/hero/weapons/
+
