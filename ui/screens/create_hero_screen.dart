@@ -17,12 +17,12 @@ class CreateHeroScreen extends StatefulWidget {
 class _CreateHeroScreenState extends State<CreateHeroScreen> {
   final _nameCtrl = TextEditingController();
 
-  String _classId = 'warrior';
+  String _classId = 'knight';
 
   // Nuovi campi corretti:
   String _headId = 'head_01';
   String _headPaletteId = ''; // vuoto = base (o fallback alla prima palette disponibile)
-  String _armorPaletteId = 'a1'; // verrà normalizzato con le varianti della classe
+  String _armorPaletteId = ''; // verrà normalizzato con le varianti della classe
   String _skinPaletteId = 'skin_01';
 
   @override
@@ -46,7 +46,7 @@ class _CreateHeroScreenState extends State<CreateHeroScreen> {
     final hc = _parseHeroClass(id);
 
     final armorIds = heroCatalog.armorVariantIdsForClass(hc);
-    final newArmor = armorIds.isNotEmpty ? armorIds.first : 'a1';
+    final newArmor = armorIds.isNotEmpty ? armorIds.first : '';
 
     setState(() {
       _classId = id;
@@ -144,9 +144,9 @@ class _CreateHeroScreenState extends State<CreateHeroScreen> {
     final armorIds = heroCatalog.armorVariantIdsForClass(hc);
 
     // Normalizzazione armor selezionata
-    final resolvedArmor = armorIds.contains(_armorPaletteId)
-        ? _armorPaletteId
-        : (armorIds.isNotEmpty ? armorIds.first : _armorPaletteId);
+    final resolvedArmor = armorIds.isNotEmpty
+        ? (armorIds.contains(_armorPaletteId) ? _armorPaletteId : armorIds.first)
+        : '';
 
     // Normalizzazione head palette selezionata
     final resolvedHeadPalette = headPalettes.isEmpty
@@ -324,27 +324,33 @@ class _CreateHeroScreenState extends State<CreateHeroScreen> {
 
                         const Text('VARIANTE ARMATURA', style: TextStyle(fontWeight: FontWeight.w900)),
                         const SizedBox(height: 8),
-                        Wrap(
-                          spacing: 10,
-                          runSpacing: 10,
-                          children: [
-                            for (final aid in armorIds)
-                              _choiceChip(
-                                selected: resolvedArmor == aid,
-                                onTap: () => _applyArmorVariant(aid),
-                                child: SizedBox(
-                                  width: 96,
-                                  height: 52,
-                                  child: Center(
-                                    child: Text(
-                                      aid.split('_').last.toUpperCase(),
-                                      style: const TextStyle(fontWeight: FontWeight.w900),
+                        if (armorIds.isEmpty)
+                          const Text(
+                            'Nessuna variante armatura disponibile per questa classe.',
+                            style: TextStyle(color: Colors.white54),
+                          )
+                        else
+                          Wrap(
+                            spacing: 10,
+                            runSpacing: 10,
+                            children: [
+                              for (final aid in armorIds)
+                                _choiceChip(
+                                  selected: resolvedArmor == aid,
+                                  onTap: () => _applyArmorVariant(aid),
+                                  child: SizedBox(
+                                    width: 96,
+                                    height: 52,
+                                    child: Center(
+                                      child: Text(
+                                        aid.split('_').last.toUpperCase(),
+                                        style: const TextStyle(fontWeight: FontWeight.w900),
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),
-                          ],
-                        ),
+                            ],
+                          ),
 
                         const SizedBox(height: 16),
 

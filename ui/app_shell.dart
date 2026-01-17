@@ -54,10 +54,10 @@ class _AppShellState extends State<AppShell> {
     final hero = p?.hero ??
         const HeroIdentity(
           name: '',
-          classId: 'warrior',
+          classId: 'knight',
           headId: 'head_01',
           headPaletteId: '',
-          armorPaletteId: 'a1',
+          armorPaletteId: '',
           skinPaletteId: 'skin_01',
           createdAtMs: 0,
         );

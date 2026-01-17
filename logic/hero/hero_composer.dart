@@ -53,7 +53,7 @@ class HeroComposer {
               child: Stack(
                 children: [
                   _layer(assetId: bodyId),
-                  _layer(assetId: armorId),
+                  if (armorId != null) _layer(assetId: armorId),
                   _layer(assetId: headLayerAssetId),
                   _layer(assetId: weaponId),
                   if (headwearId != null) _headwearLayer(headwearId),
@@ -135,13 +135,18 @@ class HeroComposer {
     return palettes.first;
   }
 
-  String _resolveArmorId({
+  String? _resolveArmorId({
     required List<String> classDefArmorIds,
     required String armorPaletteId,
   }) {
+    if (classDefArmorIds.isEmpty) return null;
     if (classDefArmorIds.contains(armorPaletteId)) return armorPaletteId;
-    if (armorPaletteId == 'a1') return classDefArmorIds[0];
-    if (armorPaletteId == 'a2') return classDefArmorIds[1];
+    if (armorPaletteId == 'a1' && classDefArmorIds.isNotEmpty) {
+      return classDefArmorIds[0];
+    }
+    if (armorPaletteId == 'a2' && classDefArmorIds.length > 1) {
+      return classDefArmorIds[1];
+    }
     return classDefArmorIds.first;
   }
 

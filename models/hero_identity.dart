@@ -2,7 +2,7 @@ class HeroIdentity {
   /// Immutabile dopo la creazione.
   final String name;
 
-  /// Es: "warrior", "mage", ...
+  /// Es: "knight", "mage", ...
   final String classId;
 
   /// Head selezionata (globale): es "head_01"
@@ -12,7 +12,7 @@ class HeroIdentity {
   /// Se vuota => usa la head base (headId).
   final String headPaletteId;
 
-  /// Variante armatura base (overlay/variant): es "armor_warrior_a1"
+  /// Variante armatura base (overlay/variant): es "armor_knight_a1"
   final String armorPaletteId;
 
   /// Palette pelle base: es "skin_01"

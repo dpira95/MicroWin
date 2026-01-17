@@ -24,7 +24,7 @@ class HeroCatalog {
   }
 
   // --- Create screen options (dipendenti dalla classe) ---
-  /// Ritorna sempre 2 ids (a1/a2) per la classe selezionata.
+  /// Ritorna le varianti disponibili per la classe selezionata (può essere vuoto).
   List<String> armorVariantIdsForClass(HeroClass id) => classDef(id).armorVariantIds;
 
   /// Arma fissa per classe (mostrata in creazione).

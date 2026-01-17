@@ -16,7 +16,7 @@ class HeroClassDef {
   });
 }
 
-/// SOLO Knight + Ninja
+/// Definizioni per tutte le classi disponibili.
 final List<HeroClassDef> kHeroClassDefs = [
   HeroClassDef(
     classId: HeroClass.knight,
@@ -28,6 +28,24 @@ final List<HeroClassDef> kHeroClassDefs = [
     classId: HeroClass.ninja,
     bodyId: 'body_ninja_base',
     defaultWeaponId: 'weapon_ninja_base',
+    armorVariantIds: const [],
+  ),
+  HeroClassDef(
+    classId: HeroClass.mage,
+    bodyId: 'body_mage_base',
+    defaultWeaponId: 'weapon_mage_base',
+    armorVariantIds: const [],
+  ),
+  HeroClassDef(
+    classId: HeroClass.dwarf,
+    bodyId: 'body_dwarf_base',
+    defaultWeaponId: 'weapon_dwarf_base',
+    armorVariantIds: const [],
+  ),
+  HeroClassDef(
+    classId: HeroClass.healer,
+    bodyId: 'body_healer_base',
+    defaultWeaponId: 'weapon_healer_base',
     armorVariantIds: const [],
   ),
 ];
