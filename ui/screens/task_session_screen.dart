@@ -4,7 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../data/constants.dart';
+import '../../logic/hero/hero_composer.dart';
 import '../../models/active_tool.dart';
+import '../../models/hero_identity.dart';
+import '../../models/hero_loadout.dart';
 import '../../store/game_store.dart';
 import '../widgets/tool_panels.dart';
 
@@ -62,11 +65,23 @@ class _TaskSessionScreenState extends State<TaskSessionScreen> {
     final timerText =
         '${leftMin.toString().padLeft(2, '0')}:${secR.toString().padLeft(2, '0')}';
 
-    final enemy = enemySprites[task.id.hashCode.abs() % enemySprites.length];
+    final enemy = enemySprites[task.category.index % enemySprites.length];
     final canWin = leftMs <= 0;
 
     final activeTool = store.activeTool;
     final isFiles = activeTool == ActiveTool.explorer;
+    final profile = store.profile;
+    final hero = profile?.hero ??
+        const HeroIdentity(
+          name: '',
+          classId: 'knight',
+          headId: 'head_01',
+          headPaletteId: '',
+          armorPaletteId: '',
+          skinPaletteId: 'skin_01',
+          createdAtMs: 0,
+        );
+    final loadout = profile?.loadout ?? const HeroLoadout(extraCosmeticIds: []);
 
     return Scaffold(
       backgroundColor: const Color(0xFF020617),
@@ -148,28 +163,65 @@ class _TaskSessionScreenState extends State<TaskSessionScreen> {
                           width: 2,
                         ),
                       ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                      child: Stack(
                         children: [
-                          Text(enemy.sprite,
-                              style: const TextStyle(fontSize: 72)),
-                          const SizedBox(height: 10),
-                          Text(
-                            enemy.description,
-                            textAlign: TextAlign.center,
-                            style: const TextStyle(color: Color(0xFF94A3B8)),
+                          Align(
+                            alignment: Alignment.topCenter,
+                            child: Padding(
+                              padding: const EdgeInsets.only(top: 24),
+                              child: Column(
+                                children: [
+                                  Text(
+                                    enemy.description,
+                                    textAlign: TextAlign.center,
+                                    style: const TextStyle(color: Color(0xFF94A3B8)),
+                                  ),
+                                  const SizedBox(height: 16),
+                                  ElevatedButton(
+                                    onPressed: canWin
+                                        ? () async {
+                                            final ok = await store.completeTask(task.id);
+                                            if (ok && context.mounted) {
+                                              Navigator.of(context).pop();
+                                            }
+                                          }
+                                        : null,
+                                    child: const Text('VITTORIA'),
+                                  ),
+                                ],
+                              ),
+                            ),
                           ),
-                          const SizedBox(height: 24),
-                          ElevatedButton(
-                            onPressed: canWin
-                                ? () async {
-                              final ok = await store.completeTask(task.id);
-                              if (ok && context.mounted) {
-                                Navigator.of(context).pop();
-                              }
-                            }
-                                : null,
-                            child: const Text('VITTORIA'),
+                          Positioned(
+                            left: 12,
+                            bottom: 8,
+                            child: SizedBox(
+                              width: 120,
+                              height: 120,
+                              child: heroComposer.buildAvatar(
+                                identity: hero,
+                                loadout: loadout,
+                                idleT: 0.0,
+                              ),
+                            ),
+                          ),
+                          Positioned(
+                            right: 12,
+                            bottom: 12,
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text(enemy.sprite, style: const TextStyle(fontSize: 64)),
+                                const SizedBox(height: 4),
+                                Text(
+                                  enemy.name,
+                                  style: const TextStyle(
+                                    fontSize: 12,
+                                    color: Color(0xFF94A3B8),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ],
                       ),

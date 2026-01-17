@@ -38,7 +38,7 @@ class HeroAssets {
     }
 
     // Weapon
-    if (assetId.startsWith('wpn_')) {
+    if (assetId.startsWith('wpn_') || assetId.startsWith('weapon_')) {
       return 'assets/hero/weapons/$assetId.png';
     }
 
